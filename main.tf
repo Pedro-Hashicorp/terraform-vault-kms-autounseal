@@ -62,7 +62,7 @@ resource "aws_instance" "ec2_subnetB" {
     volume_size = 20
   }
   tags = {
-    Name = "dev-nodeA"
+    Name = "dev-nodeB"
   }
 }
 
@@ -77,6 +77,6 @@ resource "aws_instance" "ec2_subnetC" {
     volume_size = 20
   }
   tags = {
-    Name = "dev-nodeA"
+    Name = "dev-nodeC"
   }
 }
