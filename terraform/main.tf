@@ -65,3 +65,18 @@ resource "aws_instance" "ec2_subnetB" {
     Name = "dev-nodeA"
   }
 }
+
+resource "aws_instance" "ec2_subnetC" {
+  instance_type          = "t2.micro"
+  ami                    = data.aws_ami.amazon_linux_2.id
+  vpc_security_group_ids = [aws_security_group.my_sg.id]
+  subnet_id              = aws_subnet.privateSubnetC.id
+  key_name               = "portiz"
+
+  root_block_device {
+    volume_size = 20
+  }
+  tags = {
+    Name = "dev-nodeA"
+  }
+}
