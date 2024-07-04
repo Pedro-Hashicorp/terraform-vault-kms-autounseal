@@ -47,7 +47,7 @@ resource "aws_instance" "ec2_subnetA" {
     volume_size = 20
   }
   tags = {
-    Name = "dev-node"
+    Name = "dev-nodeA"
   }
 }
 
