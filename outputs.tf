@@ -1,5 +1,11 @@
 output "instance_ips" {
-  value = aws_instance.*.public_ip
+  value = aws_instance.ec2_subnetA.private_ip
+}
+output "instance_ips" {
+  value = aws_instance.ec2_subnetB.private_ip
+}
+output "instance_ips" {
+  value = aws_instance.ec2_subnetC.private_ip
 }
 
 resource "null_resource" "write_outputs" {
