@@ -1,8 +1,11 @@
-output "vpc_id" {
-  value = aws_vpc.my_vpc.id
+output "instance_ips" {
+  value = aws_instance.*.public_ip
 }
 
-output "subnet_ids" {
-  value = [aws_subnet.privateSubnetA.id, aws_subnet.privateSubnetB.id, aws_subnet.privateSubnetC.id]
+resource "null_resource" "write_outputs" {
+  provisioner "local-exec" {
+    command = <<EOT
+      terraform output -json > terraform_outputs.json
+    EOT
+  }
 }
-
