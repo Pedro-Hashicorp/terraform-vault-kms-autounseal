@@ -23,8 +23,15 @@ resource "aws_security_group" "my_sg" {
   }
 
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = 8200
+    to_port     = 8200
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8201
+    to_port     = 8201
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
