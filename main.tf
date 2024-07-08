@@ -79,4 +79,31 @@ resource "aws_instance" "ec2_subnetC" {
   tags = {
     Name = "dev-nodeC"
   }
+
+provisioner "file" {
+    source      = "vault-config.hcl"
+    destination = "/tmp/vault-config.hcl"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y unzip",
+      "curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -",
+      "sudo apt-add-repository 'deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main'",
+      "sudo apt-get update",
+      "sudo apt-get install -y vault",
+      "sudo mv /tmp/vault-config.hcl /etc/vault.d/vault.hcl",
+      "sudo systemctl enable vault",
+      "sudo systemctl start vault"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.private_key_path)
+      host        = self.public_ip
+    }
+  }
+
 }
