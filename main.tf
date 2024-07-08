@@ -80,34 +80,6 @@ resource "aws_instance" "ec2_subnetC" {
     Name = "dev-nodeC"
   }
 
-provisioner "file" {
-    source      = "vault-config.hcl"
-    destination = "/tmp/vault-config.hcl"
-  }
+user_data = file("install-vault.sh")
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo yum update -y
-              sudo yum install -y yum-utils
-              sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-              sudo yum -y install vault
-
-              sudo tee /etc/vault.d/vault.hcl > /dev/null <<EOT
-              storage "file" {
-                path = "/opt/vault/data"
-              }
-
-              listener "tcp" {
-                address     = "0.0.0.0:8200"
-                tls_disable = 1
-              }
-
-              api_addr = "http://0.0.0.0:8200"
-              cluster_addr = "http://0.0.0.0:8201"
-              ui = true
-              EOT
-
-              sudo systemctl enable vault
-              sudo systemctl start vault
-              EOF
 }
