@@ -85,25 +85,29 @@ provisioner "file" {
     destination = "/tmp/vault-config.hcl"
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y unzip",
-      "curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -",
-      "sudo apt-add-repository 'deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main'",
-      "sudo apt-get update",
-      "sudo apt-get install -y vault",
-      "sudo mv /tmp/vault-config.hcl /etc/vault.d/vault.hcl",
-      "sudo systemctl enable vault",
-      "sudo systemctl start vault"
-    ]
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo yum update -y
+              sudo yum install -y yum-utils
+              sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+              sudo yum -y install vault
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file(var.private_key_path)
-      host        = self.public_ip
-    }
-  }
+              sudo tee /etc/vault.d/vault.hcl > /dev/null <<EOT
+              storage "file" {
+                path = "/opt/vault/data"
+              }
 
+              listener "tcp" {
+                address     = "0.0.0.0:8200"
+                tls_disable = 1
+              }
+
+              api_addr = "http://0.0.0.0:8200"
+              cluster_addr = "http://0.0.0.0:8201"
+              ui = true
+              EOT
+
+              sudo systemctl enable vault
+              sudo systemctl start vault
+              EOF
 }
