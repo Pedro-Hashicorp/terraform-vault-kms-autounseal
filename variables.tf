@@ -18,3 +18,9 @@ variable "private_key_path" {
   default = "./portiz.pem"
 }
 
+variable "instance_type" {
+  type = string
+  default = "t2.micro"
+  
+}
+
