@@ -96,21 +96,4 @@ resource "aws_instance" "ec2_subnetC" {
   tags = {
     Name = "dev-nodeC"
   }
-
-user_data = <<-EOF
-              #!/bin/bash
-              # Update and install necessary packages
-              sudo yum -y update
-              sudo yum install -y yum-utils
-
-              # Add HashiCorp Linux repository
-              sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-
-              # Install Vault
-              sudo yum -y install vault
-
-              sudo systemctl start vault
-              sudo systemctl enable vault
-              EOF
-
 }
