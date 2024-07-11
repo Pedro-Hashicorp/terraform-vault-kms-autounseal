@@ -21,7 +21,6 @@ resource "aws_subnet" "privateSubnets" {
 #Attach Internet Gateway to VPC
 resource "aws_internet_gateway" "my_internet_gateway" {
   vpc_id = aws_vpc.my_vpc.id
-
   tags = {
     Name = "dev-igw"
   }
@@ -36,7 +35,8 @@ resource "aws_route" "default_route" {
 }
 
 
-resource "aws_route_table_association" "subnetB_assoc" {
-  subnet_id      = aws_subnet.privateSubnets.*.id
+resource "aws_route_table_association" "subnet_assoc" {
+  for_each = aws_subnet.privateSubnets
+  subnet_id      = each.value.id
   route_table_id = aws_route_table.my_public_rt.id
 }
