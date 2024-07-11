@@ -18,7 +18,7 @@ data "aws_ami" "amazon_linux_2" {
 }
 
 data "aws_subnet" "subnets" {
-  for_each = toset(var.private_ips)
+  for_each = toset(var.subnet_cidrs)
 
   filter {
     name   = "cidrBlock"
