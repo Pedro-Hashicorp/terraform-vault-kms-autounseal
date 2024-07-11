@@ -3,12 +3,12 @@ resource "aws_security_group" "my_sg" {
   description = "dev security group"
   vpc_id      = aws_vpc.my_vpc.id
 
-  ingress{
-    from_port = -1
-    to_port = -1
-    protocol = "icmp"
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
     cidr_blocks = [var.vpc_cidr]
-  }  
+  }
   ingress {
     from_port   = 80
     to_port     = 80

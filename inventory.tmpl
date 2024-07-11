@@ -1,0 +1,6 @@
+```
+[vault_servers]
+%{ for ip in vault_servers ~}
+${ip}
+%{ endfor ~}
+```

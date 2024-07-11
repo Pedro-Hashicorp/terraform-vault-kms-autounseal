@@ -1,5 +1,5 @@
-provider "aws"{
-    region = "eu-west-1"
+provider "aws" {
+  region = "eu-west-1"
 }
 
 
@@ -43,6 +43,7 @@ resource "aws_instance" "ec2_subnetA" {
   vpc_security_group_ids = [aws_security_group.my_sg.id]
   subnet_id              = aws_subnet.privateSubnetA.id
   key_name               = "portiz"
+  private_ip             = var.private_ips[0]
 
   root_block_device {
     volume_size = 20
@@ -74,6 +75,7 @@ resource "aws_instance" "ec2_subnetB" {
   vpc_security_group_ids = [aws_security_group.my_sg.id]
   subnet_id              = aws_subnet.privateSubnetB.id
   key_name               = "portiz"
+  private_ip             = var.private_ips[1]
 
   root_block_device {
     volume_size = 20
@@ -89,6 +91,7 @@ resource "aws_instance" "ec2_subnetC" {
   vpc_security_group_ids = [aws_security_group.my_sg.id]
   subnet_id              = aws_subnet.privateSubnetC.id
   key_name               = "portiz"
+  private_ip             = var.private_ips[2]
 
   root_block_device {
     volume_size = 20
