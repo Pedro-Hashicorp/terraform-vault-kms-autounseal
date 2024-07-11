@@ -38,18 +38,19 @@ resource "aws_route_table_association" "subnetC_assoc" {
 
 
 resource "aws_instance" "ec2_subnetA" {
+  count = 3
   instance_type          = "t2.micro"
   ami                    = data.aws_ami.amazon_linux_2.id
   vpc_security_group_ids = [aws_security_group.my_sg.id]
   subnet_id              = aws_subnet.privateSubnetA.id
   key_name               = "portiz"
-  private_ip             = var.private_ips[0]
+  private_ip             = var.private_ips[count.index]
 
   root_block_device {
     volume_size = 20
   }
   tags = {
-    Name = "dev-nodeA"
+    Name = "dev-node-${count.index+1}"
   }
 
   user_data = <<-EOF
@@ -67,36 +68,4 @@ resource "aws_instance" "ec2_subnetA" {
               sudo systemctl start vault
               sudo systemctl enable vault
               EOF
-}
-
-resource "aws_instance" "ec2_subnetB" {
-  instance_type          = "t2.micro"
-  ami                    = data.aws_ami.amazon_linux_2.id
-  vpc_security_group_ids = [aws_security_group.my_sg.id]
-  subnet_id              = aws_subnet.privateSubnetB.id
-  key_name               = "portiz"
-  private_ip             = var.private_ips[1]
-
-  root_block_device {
-    volume_size = 20
-  }
-  tags = {
-    Name = "dev-nodeB"
-  }
-}
-
-resource "aws_instance" "ec2_subnetC" {
-  instance_type          = "t2.micro"
-  ami                    = data.aws_ami.amazon_linux_2.id
-  vpc_security_group_ids = [aws_security_group.my_sg.id]
-  subnet_id              = aws_subnet.privateSubnetC.id
-  key_name               = "portiz"
-  private_ip             = var.private_ips[2]
-
-  root_block_device {
-    volume_size = 20
-  }
-  tags = {
-    Name = "dev-nodeC"
-  }
 }
