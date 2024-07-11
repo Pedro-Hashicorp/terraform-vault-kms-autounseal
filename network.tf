@@ -36,7 +36,8 @@ resource "aws_route" "default_route" {
 
 
 resource "aws_route_table_association" "subnet_assoc" {
-  for_each = aws_subnet.privateSubnets
+  for_each = { for idx, subnet in aws_subnet.privateSubnets : idx => subnet }
+
   subnet_id      = each.value.id
   route_table_id = aws_route_table.my_public_rt.id
 }
