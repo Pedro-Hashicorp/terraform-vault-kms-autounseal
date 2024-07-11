@@ -14,28 +14,6 @@ resource "aws_route_table" "my_public_rt" {
   }
 }
 
-#Add default Route of VPC to point Internet Gateway
-resource "aws_route" "default_route" {
-  route_table_id         = aws_route_table.my_public_rt.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.my_internet_gateway.id
-}
-
-
-resource "aws_route_table_association" "subnetA_assoc" {
-  subnet_id      = aws_subnet.privateSubnetA.id
-  route_table_id = aws_route_table.my_public_rt.id
-}
-resource "aws_route_table_association" "subnetB_assoc" {
-  subnet_id      = aws_subnet.privateSubnetB.id
-  route_table_id = aws_route_table.my_public_rt.id
-}
-resource "aws_route_table_association" "subnetC_assoc" {
-  subnet_id      = aws_subnet.privateSubnetC.id
-  route_table_id = aws_route_table.my_public_rt.id
-}
-
-
 
 resource "aws_instance" "ec2_node" {
   count = 3

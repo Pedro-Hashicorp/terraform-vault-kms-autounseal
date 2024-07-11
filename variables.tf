@@ -30,16 +30,10 @@ variable "private_ips" {
 }
 
 variable "availability_zones" {
-  type = map
-  default = {
-      eu-west-1a = {
-        private_subnet ="10.0.1.100"
-      }
-      eu-west-1b = {
-        private_subnet ="10.0.2.100"
-      }
-      eu-west-1c = {
-        private_subnet ="10.0.3.100"
-      }
-  }  
+  type = list(string)
+  description = "Availability Zones"
+  default = [ "eu-west-1a","eu-west-1b","eu-west-1c" ]
 }
+
+
+
