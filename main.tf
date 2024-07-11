@@ -37,7 +37,7 @@ resource "aws_route_table_association" "subnetC_assoc" {
 
 
 
-resource "aws_instance" "ec2_subnetA" {
+resource "aws_instance" "ec2_node" {
   count = 3
   instance_type          = "t2.micro"
   ami                    = data.aws_ami.amazon_linux_2.id
