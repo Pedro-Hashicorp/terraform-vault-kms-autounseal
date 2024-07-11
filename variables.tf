@@ -11,7 +11,6 @@ variable "subnet_cidrs" {
   default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
-
 variable "private_key_path" {
   type        = string
   description = "Path to the SSH private key value"
@@ -28,4 +27,19 @@ variable "private_ips" {
   type        = list(string)
   description = "Private Ips of different 3 instances"
   default     = ["10.0.1.100", "10.0.2.100", "10.0.3.100"]
+}
+
+variable "availability_zones" {
+  type = map
+  default = {
+      eu-west-1a = {
+        private_subnet ="10.0.1.100"
+      }
+      eu-west-1b = {
+        private_subnet ="10.0.2.100"
+      }
+      eu-west-1c = {
+        private_subnet ="10.0.3.100"
+      }
+  }  
 }

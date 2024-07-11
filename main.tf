@@ -42,7 +42,7 @@ resource "aws_instance" "ec2_node" {
   instance_type          = "t2.micro"
   ami                    = data.aws_ami.amazon_linux_2.id
   vpc_security_group_ids = [aws_security_group.my_sg.id]
-  subnet_id              = aws_subnet.privateSubnetA.id
+  subnet_id              = data.aws_subnet.subnets[count.index].id
   key_name               = "portiz"
   private_ip             = var.private_ips[count.index]
 

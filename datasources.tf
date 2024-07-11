@@ -16,3 +16,12 @@ data "aws_ami" "amazon_linux_2" {
     values = ["available"]
   }
 }
+
+data "aws_subnet" "subnets" {
+  for_each = toset(var.private_ips)
+
+  filter {
+    name   = "cidrBlock"
+    values = [each.key]
+  }
+}
