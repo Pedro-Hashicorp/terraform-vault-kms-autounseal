@@ -47,7 +47,7 @@ resource "aws_instance" "ec2_node" {
 
               # Create Vault configuration
               sudo mkdir -p /etc/vault.d
-              cat <<EOL | sudo tee /etc/vault.d/vault.hcl
+              cat << EOT | sudo tee /etc/vault.d/vault.hcl
              storage "raft" {
                 path    = "/opt/vault/data"
                 node_id = "node${count.index + 1}"
@@ -58,7 +58,8 @@ resource "aws_instance" "ec2_node" {
               }
               api_addr = "http://${var.private_ips[count.index]}:8200"
               cluster_addr = "http://${var.private_ips[count.index]}:8201"
-              EOT
+
+            EOT
 
               # Start Vault
               sudo systemctl enable vault
@@ -70,16 +71,12 @@ resource "aws_instance" "ec2_node" {
 
               api_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8200"
               cluster_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8201"
-              ui = true
-              EOL
 
               # Start Vault
               sudo mkdir -p /opt/vault/data
               sudo vault server -config=/etc/vault.d/vault.hcl 
+              export VAULT_ADDR="http://0.0.0.0:8200"
 
-
-              sudo systemctl start vault
-              sudo systemctl enable vault
               vault operator init > /home/ec2-user/key.json
               cd /home/ec2-user
               unseal_key1=$(jq -r '.unseal_keys_hex[0]' "key.json")
