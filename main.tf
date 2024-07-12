@@ -50,14 +50,14 @@ resource "aws_instance" "ec2_node" {
               cat <<EOL | sudo tee /etc/vault.d/vault.hcl
              storage "raft" {
                 path    = "/opt/vault/data"
-                node_id = "node${count.index + 2}"
+                node_id = "node${count.index + 1}"
               }
               listener "tcp" {
                 address     = "0.0.0.0:8200"
                 tls_disable = 1
               }
-              api_addr = "http://${self.private_ip}:8200"
-              cluster_addr = "http://${self.private_ip}:8201"
+              api_addr = "http://${var.private_ip[count.index]}:8200"
+              cluster_addr = "http://${var.private_ip[count.index]}:8201"
               EOT
 
               # Start Vault
@@ -66,7 +66,7 @@ resource "aws_instance" "ec2_node" {
 
               # Join the cluster
               sleep 30  # Wait for leader to be ready
-              vault operator join http://${aws_instance.vault_leader.private_ip}:8200
+              vault operator join http://${var.private_ips[0]}:8200
 
               api_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8200"
               cluster_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8201"
