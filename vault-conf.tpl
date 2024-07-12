@@ -16,15 +16,15 @@ sudo mkdir -p /etc/vault.d
 cat << 'EOVAULT' | sudo tee /etc/vault.d/vault.hcl
 storage "raft" {
     path    = "/opt/vault/data"
-    node_id = "node${count.index + 1}"
+    node_id = "node${count}"
 }
 listener "tcp" {
     address     = "0.0.0.0:8200"
     tls_disable = 1
 }´
 VAULT_ADDR="http://0.0.0.0:8200"
-api_addr = "http://${var.private_ips[count.index]}:8200"
-cluster_addr = "http://${var.private_ips[count.index]}:8201"
+api_addr = "http://${private_ip}:8200"
+cluster_addr = "http://${private_ip}:8201"
 EOVAULT
 
 # Start Vault

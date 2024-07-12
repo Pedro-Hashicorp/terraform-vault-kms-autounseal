@@ -31,5 +31,8 @@ resource "aws_instance" "ec2_node" {
     Name = "dev-node-${count.index+1}"
   }
 
- user_data = templatefile("${path.module}/vault-conf.tpl",{})
+ user_data = templatefile("${path.module}/vault-conf.tpl",{
+  private_ip = var.private_ips[count.index],
+  count = count.index +1
+ })
 }
