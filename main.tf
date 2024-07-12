@@ -42,12 +42,13 @@ resource "aws_instance" "ec2_node" {
 
               # Install Vault
               sudo yum -y install vault
+              sudo yum -y install jq
 
 
               # Create Vault configuration
               sudo mkdir -p /etc/vault.d
               cat <<EOL | sudo tee /etc/vault.d/vault.hcl
-              storage "raft" {
+              storage "file" {
                 path = "/opt/vault/data"
                 node_id = "vault-${count.index + 1}"
               }
@@ -69,5 +70,13 @@ resource "aws_instance" "ec2_node" {
 
               sudo systemctl start vault
               sudo systemctl enable vault
+              vault operator init > /home/ec2-user/key.json
+              cd /home/ec2-user
+              unseal_key1=$(jq -r '.unseal_keys_hex[0]' "key.json")
+              unseal_key2=$(jq -r '.unseal_keys_hex[1]' "key.json")
+              unseal_key3=$(jq -r '.unseal_keys_hex[2]' "key.json")
+
+
+
               EOF
 }
