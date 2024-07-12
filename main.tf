@@ -36,7 +36,8 @@ resource "aws_instance" "ec2_node" {
             # Update and install necessary packages
             sudo yum -y update
             sudo yum install -y yum-utils
-
+            export VAULT_ADDR="http://0.0.0.0:8200"
+            export TEST="TEST213123"
             # Add HashiCorp Linux repository
             sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 
@@ -71,9 +72,10 @@ resource "aws_instance" "ec2_node" {
             sudo mkdir -p /opt/vault/data
             sudo vault server -config=/etc/vault.d/vault.hcl &
 
-            export VAULT_ADDR="http://0.0.0.0:8200"
+            
             vault operator init -format=json > /home/ec2-user/key.json
             cd /home/ec2-user
+            echo "asdasdasd" >> hola.txt
             vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
             vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
             vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
