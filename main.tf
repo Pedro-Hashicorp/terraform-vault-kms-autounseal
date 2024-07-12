@@ -58,17 +58,12 @@ resource "aws_instance" "ec2_node" {
             }
             api_addr = "http://${var.private_ips[count.index]}:8200"
             cluster_addr = "http://${var.private_ips[count.index]}:8201"
-            EOVAULT
+            'EOVAULT'
 
             # Start Vault
             sudo systemctl enable vault
             sudo systemctl start vault
-
-
-            api_addr="http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8200"
-            cluster_addr="http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8201"
-
-            # Start Vault
+        
             sudo mkdir -p /opt/vault/data
             sudo vault server -config=/etc/vault.d/vault.hcl &
 
