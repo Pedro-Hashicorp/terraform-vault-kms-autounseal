@@ -48,15 +48,25 @@ resource "aws_instance" "ec2_node" {
               # Create Vault configuration
               sudo mkdir -p /etc/vault.d
               cat <<EOL | sudo tee /etc/vault.d/vault.hcl
-              storage "file" {
-                path = "/opt/vault/data"
-                node_id = "vault-${count.index + 1}"
+             storage "raft" {
+                path    = "/opt/vault/data"
+                node_id = "node${count.index + 2}"
               }
-
               listener "tcp" {
-                address = "0.0.0.0:8200"
+                address     = "0.0.0.0:8200"
                 tls_disable = 1
               }
+              api_addr = "http://${self.private_ip}:8200"
+              cluster_addr = "http://${self.private_ip}:8201"
+              EOT
+
+              # Start Vault
+              sudo systemctl enable vault
+              sudo systemctl start vault
+
+              # Join the cluster
+              sleep 30  # Wait for leader to be ready
+              vault operator join http://${aws_instance.vault_leader.private_ip}:8200
 
               api_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8200"
               cluster_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8201"
