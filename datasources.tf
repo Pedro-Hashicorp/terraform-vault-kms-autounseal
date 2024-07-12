@@ -24,4 +24,6 @@ data "aws_subnet" "subnets" {
     name   = "cidrBlock"
     values = [each.key]
   }
+
+  depends_on = [aws_subnet.privateSubnets]
 }
