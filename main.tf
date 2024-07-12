@@ -56,12 +56,13 @@ resource "aws_instance" "ec2_node" {
               address     = "0.0.0.0:8200"
               tls_disable = 1
             }
+            VAULT_ADDR="http://0.0.0.0:8200"
             api_addr = "http://${var.private_ips[count.index]}:8200"
             cluster_addr = "http://${var.private_ips[count.index]}:8201"
-            'EOVAULT'
+            EOVAULT
 
             # Start Vault
-            sudo systemctl enable vault
+            sudo systemctl enable vaul
             sudo systemctl start vault
         
             sudo mkdir -p /opt/vault/data
