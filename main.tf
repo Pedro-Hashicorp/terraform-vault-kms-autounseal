@@ -56,8 +56,8 @@ resource "aws_instance" "ec2_node" {
                 address     = "0.0.0.0:8200"
                 tls_disable = 1
               }
-              api_addr = "http://${var.private_ip[count.index]}:8200"
-              cluster_addr = "http://${var.private_ip[count.index]}:8201"
+              api_addr = "http://${var.private_ips[count.index]}:8200"
+              cluster_addr = "http://${var.private_ips[count.index]}:8201"
               EOT
 
               # Start Vault
