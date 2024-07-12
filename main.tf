@@ -63,9 +63,6 @@ resource "aws_instance" "ec2_node" {
             sudo systemctl enable vault
             sudo systemctl start vault
 
-            # Join the cluster
-            sleep 30  # Wait for leader to be ready
-            vault operator join http://${var.private_ips[0]}:8200
 
             api_addr="http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8200"
             cluster_addr="http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8201"
@@ -75,11 +72,10 @@ resource "aws_instance" "ec2_node" {
             sudo vault server -config=/etc/vault.d/vault.hcl &
 
             export VAULT_ADDR="http://0.0.0.0:8200"
-
             vault operator init -format=json > /home/ec2-user/key.json
             cd /home/ec2-user
-            unseal_key1=$(jq -r '.unseal_keys_hex[0]' "key.json")
-            unseal_key2=$(jq -r '.unseal_keys_hex[1]' "key.json")
-            unseal_key3=$(jq -r '.unseal_keys_hex[2]' "key.json")
+            vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
+            vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
+            vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
             EOF
 }
