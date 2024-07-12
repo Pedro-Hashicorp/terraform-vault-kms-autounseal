@@ -43,6 +43,30 @@ resource "aws_instance" "ec2_node" {
               # Install Vault
               sudo yum -y install vault
 
+
+              # Create Vault configuration
+              sudo mkdir -p /etc/vault.d
+              cat <<EOL | sudo tee /etc/vault.d/vault.hcl
+              storage "raft" {
+                path = "/opt/vault/data"
+                node_id = "vault-${count.index + 1}"
+              }
+
+              listener "tcp" {
+                address = "0.0.0.0:8200"
+                tls_disable = 1
+              }
+
+              api_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8200"
+              cluster_addr = "http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8201"
+              ui = true
+              EOL
+
+              # Start Vault
+              sudo mkdir -p /opt/vault/data
+              sudo vault server -config=/etc/vault.d/vault.hcl 
+
+
               sudo systemctl start vault
               sudo systemctl enable vault
               EOF
