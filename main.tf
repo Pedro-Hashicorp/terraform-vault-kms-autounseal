@@ -76,7 +76,7 @@ resource "aws_instance" "ec2_node" {
 
             export VAULT_ADDR="http://0.0.0.0:8200"
 
-            vault operator init > /home/ec2-user/key.json
+            vault operator init -format=json > /home/ec2-user/key.json
             cd /home/ec2-user
             unseal_key1=$(jq -r '.unseal_keys_hex[0]' "key.json")
             unseal_key2=$(jq -r '.unseal_keys_hex[1]' "key.json")
