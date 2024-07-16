@@ -2,9 +2,6 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-
-
-
 #Create a Route table for the VPC
 resource "aws_route_table" "my_public_rt" {
   vpc_id = aws_vpc.my_vpc.id
