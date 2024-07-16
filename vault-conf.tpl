@@ -13,7 +13,7 @@ sudo yum -y install jq
 
 # Create Vault configuration
 sudo mkdir -p /etc/vault.d
-cat << 'EOVAULT' | sudo tee /etc/vault.d/vault.hcl
+cat << EOT | sudo tee /etc/vault.d/vault.hcl
 storage "raft" {
     path    = "/opt/vault/data"
     node_id = "node${count}"
@@ -25,7 +25,7 @@ listener "tcp" {
 
 api_addr = "http://${private_ip}:8200"
 cluster_addr = "http://${private_ip}:8201"
-EOVAULT
+EOT
 
 export VAULT_ADDR="http://0.0.0.0:8200"
 # Start Vault
