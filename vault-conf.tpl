@@ -21,14 +21,15 @@ storage "raft" {
 listener "tcp" {
     address     = "0.0.0.0:8200"
     tls_disable = 1
-}´
-VAULT_ADDR="http://0.0.0.0:8200"
+}
+
 api_addr = "http://${private_ip}:8200"
 cluster_addr = "http://${private_ip}:8201"
 EOVAULT
 
+export VAULT_ADDR="http://0.0.0.0:8200"
 # Start Vault
-sudo systemctl enable vaul
+sudo systemctl enable vault
 sudo systemctl start vault
 
 sudo mkdir -p /opt/vault/data
