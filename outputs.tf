@@ -4,6 +4,6 @@ output "name" {
 
 output "urls" {
   value = [
-    for ip in aws_instance.ec2_node[*].public_ip : "https://${ip}:8200"
+    for ip in aws_instance.ec2_node[*].public_ip : "http://${ip}:8200"
   ]
 }
