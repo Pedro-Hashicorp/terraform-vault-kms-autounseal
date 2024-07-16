@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "my_bucket" {
   }
 }
 resource "aws_s3_bucket_acl" "s3_acl" {
-  bucket = aws_s3_bucket.my_bucket
+  bucket = aws_s3_bucket.my_bucket.id
   acl = "private"
 }
 
