@@ -39,6 +39,7 @@ sudo vault server -config=/etc/vault.d/vault.hcl &
 vault operator init -format=json > /home/ec2-user/key.json
 cd /home/ec2-user
 echo "asdasdasd" >> hola.txt
+echo "asdasdasd" >> hola.txt
 vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
 vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
