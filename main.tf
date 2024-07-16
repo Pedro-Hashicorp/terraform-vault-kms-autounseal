@@ -16,8 +16,6 @@ resource "aws_route_table" "my_public_rt" {
 
 resource "aws_s3_bucket" "my_bucket" {
   bucket = "pedroform-bucket"  # Replace with your unique bucket name
-  acl    = "private"
-
   tags = {
     Name        = "MyBucket"
     Environment = "Dev"
