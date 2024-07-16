@@ -16,7 +16,7 @@ resource "aws_route_table" "my_public_rt" {
 
 
 resource "aws_instance" "ec2_node" {
-  count = 1
+  count = 3
   instance_type          = "t2.micro"
   ami                    = data.aws_ami.amazon_linux_2.id
   vpc_security_group_ids = [aws_security_group.my_sg.id]
