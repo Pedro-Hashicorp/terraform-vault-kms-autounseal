@@ -34,9 +34,9 @@ sudo systemctl start vault
 
 sudo mkdir -p /opt/vault/data
 sudo vault server -config=/etc/vault.d/vault.hcl &
-
-echo "export VAULT_ADDR=http://127.0.0.1:8200" | sudo tee -a /etc/environment
-echo "export VAULT_API_ADDR=http://127.0.0.1:8200" | sudo tee -a /etc/environment
+export VAULT_ADDR=http://0.0.0.0:8200
+echo "export VAULT_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
+echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 
 # Source the environment file
 source /etc/environment
