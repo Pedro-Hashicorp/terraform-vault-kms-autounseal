@@ -23,6 +23,10 @@ resource "aws_s3_bucket" "my_bucket" {
     Environment = "Dev"
   }
 }
+resource "aws_s3_bucket_acl" "s3_acl" {
+  bucket = aws_s3_bucket.my_bucket
+  acl = "private"
+}
 
 resource "aws_instance" "ec2_node" {
   count = 1
