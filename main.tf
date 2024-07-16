@@ -39,7 +39,7 @@ resource "aws_instance" "ec2_node" {
   subnet_id              = data.aws_subnet.subnets[var.subnet_cidrs[count.index]].id
   key_name               = "portiz"
   private_ip             = var.private_ips[count.index]
-  iam_instance_profile = aws_iam_instance_profile.s3_access_instance_profile.name
+  iam_instance_profile = aws_iam_instance_profile.iam-for-ec2-create-s33.name
 
 
   root_block_device {
