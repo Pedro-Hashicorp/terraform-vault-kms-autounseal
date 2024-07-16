@@ -25,12 +25,14 @@ listener "tcp" {
 
 api_addr = "http://${private_ip}:8200"
 cluster_addr = "http://${private_ip}:8201"
+ui="true"
 EOT
 
 export VAULT_ADDR="http://0.0.0.0:8200"
 # Start Vault
 sudo systemctl enable vault
 sudo systemctl start vault
+export VAULT_ADDR="http://0.0.0.0:8200"
 
 sudo mkdir -p /opt/vault/data
 sudo vault server -config=/etc/vault.d/vault.hcl &
@@ -38,8 +40,7 @@ sudo vault server -config=/etc/vault.d/vault.hcl &
 
 vault operator init -format=json > /home/ec2-user/key.json
 cd /home/ec2-user
-echo "asdasdasd" >> hola.txt
-echo "asdasdasd" >> hola.txt
+export VAULT_ADDR="http://0.0.0.0:8200"
 vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
 vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
