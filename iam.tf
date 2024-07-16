@@ -1,5 +1,5 @@
 resource "aws_iam_role" "s3_access_role" {
-  name = "s3_access_role"
+  name = "s3_access_role_prueba"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -24,9 +24,7 @@ resource "aws_iam_role_policy" "s3_access_policy" {
     Statement = [
       {
         Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:ListBucket"
+          "s3:*"
         ],
         Effect   = "Allow",
         Resource = [
@@ -38,7 +36,7 @@ resource "aws_iam_role_policy" "s3_access_policy" {
   })
 }
 
-resource "aws_iam_instance_profile" "s3_access_instance_profile" {
-  name = "s3_access_instance_profile"
+resource "aws_iam_instance_profile" "iam-for-ec2-create-s33" {
+  name = "iam-for-ec2-create-s33"
   role = aws_iam_role.s3_access_role.name
 }
