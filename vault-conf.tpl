@@ -42,7 +42,7 @@ export VAULT_ADDR=http://0.0.0.0:8200
 source /etc/environment
 
 vault operator init -format=json > /home/ec2-user/key.json
-#cd /home/ec2-user
+cd /home/ec2-user
 vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
 vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
