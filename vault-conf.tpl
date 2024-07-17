@@ -38,7 +38,7 @@ echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 
 source /etc/environment
 
-%{if ${count}}
+%{if ${count} != 0 }
 
 echo "hola mundo" >> dentro.txt
 
