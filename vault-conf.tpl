@@ -2,8 +2,6 @@
 # Update and install necessary packages
 sudo yum -y update
 sudo yum install -y yum-utils
-export VAULT_ADDR="http://0.0.0.0:8200"
-export TEST="TEST213123"
 # Add HashiCorp Linux repository
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 
