@@ -2,7 +2,6 @@
 # Update and install necessary packages
 sudo yum -y update
 sudo yum install -y yum-utils
-# Add HashiCorp Linux repository
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 
 # Install Vault
