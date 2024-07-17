@@ -38,15 +38,12 @@ echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 
 source /etc/environment
 
-%{if ${count} != 0 }
+if [${count} != 0]; then
+    echo "hola mundo" >> dentro.txt
 
-echo "hola mundo" >> dentro.txt
-
-%{else}
-echo "hola mundo" >> fuera.txt
-
-%{ endif }
-
+else
+    echo "hola mundo" >> fuera.txt
+    
 vault operator init -format=json > /home/ec2-user/key.json
 sudo vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 sudo vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
