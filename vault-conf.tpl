@@ -35,15 +35,13 @@ sudo systemctl start vault
 sudo mkdir -p /opt/vault/data
 sudo vault server -config=/etc/vault.d/vault.hcl &
 export VAULT_ADDR=http://0.0.0.0:8200
-#echo "export VAULT_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
-#echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
+echo "export VAULT_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
+echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 
 # Source the environment file
 source /etc/environment
 
 vault operator init -format=json > /home/ec2-user/key.json
-cd /home/ec2-user
-sleep 10
 sudo vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 sudo vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
 sudo vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
