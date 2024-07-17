@@ -43,9 +43,9 @@ source /etc/environment
 
 vault operator init -format=json > /home/ec2-user/key.json
 cd /home/ec2-user
-vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
-vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
-vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
-echo "hola mundo" >> hola.txt
+sudo vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
+sudo vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
+sudo vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
+sudo echo "hola mundo" >> hola.txt
 #aws s3 cp key.json s3://pedroform-bucket/key-node-${count}.js
 #sudo rm -r keys.json

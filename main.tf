@@ -50,7 +50,7 @@ resource "aws_instance" "ec2_node" {
   }
 
  user_data = templatefile("${path.module}/vault-conf.tpl",{
-  private_ip = var.private_ips[0],
+  private_ip = var.private_ips[count.index],
   count = count.index +1
  })
 }
