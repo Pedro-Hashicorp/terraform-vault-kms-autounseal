@@ -24,13 +24,18 @@ storage "raft" {
   path    = "/opt/vault/data"
   node_id = "node1"
 
-retry_join {
-    leader_api_addr         = "http://10.0.2.100:8200"
-}
+        retry_join {
+            leader_api_addr         = "http://10.0.1.100:8200"
+        }
 
-retry_join {
-    leader_api_addr         = "http://10.0.3.100:8200"
-  }
+        retry_join {
+            leader_api_addr         = "http://10.0.2.100:8200"
+        }
+        }
+
+        retry_join {
+            leader_api_addr         = "http://10.0.3.100:8200"
+        }
 }
 ui="true"
 EOT
@@ -56,6 +61,7 @@ else
 fi
 
 #vault operator init -format=json > /home/ec2-user/key.json
+#vault operator init -key-shares=3 -key-threshold=2 | tee /root/vault-initialization.txt
 #sudo vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 #sudo vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
 #sudo vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
