@@ -10,7 +10,18 @@ resource "aws_iam_role" "s3_access_role" {
         Principal = {
           Service = "ec2.amazonaws.com"
         }
-      }
+      },
+      {
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:DescribeKey"
+      ],
+      "Resource": "arn:aws:kms:eu-west-1:975050084720:key/ec11d974-ffe5-4823-b285-5c0e0907eb98"
+    }
+
     ]
   })
 
@@ -32,31 +43,10 @@ resource "aws_iam_role_policy" "s3_access_policy" {
           "${aws_s3_bucket.my_bucket.arn}",
           "${aws_s3_bucket.my_bucket.arn}/*"
         ]
-      }
+      },
+
     ]
   })
-  
-}
-
-resource "aws_iam_role_policy" "kms_access" {
-  name = "s3_access_policy"
-  role = aws_iam_role.s3_access_role.id
-
-  policy = jsonencode({
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "kms:Decrypt",
-        "kms:Encrypt",
-        "kms:GenerateDataKey",
-        "kms:DescribeKey"
-      ],
-      "Resource": "arn:aws:kms:eu-west-1:975050084720:key/ec11d974-ffe5-4823-b285-5c0e0907eb98"
-    }
-  ]
-})
   
 }
 
