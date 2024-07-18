@@ -50,9 +50,9 @@ echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 source /etc/environment
 
 if [${count} != 1]; then
-    echo "hola mundo" >> dentro.txt
+    sudo echo "hola mundo" >> dentro.txt
 else
-    echo "hola mundo" >> fuera.txt
+    sudo echo "hola mundo" >> fuera.txt
 fi
 
 #vault operator init -format=json > /home/ec2-user/key.json
