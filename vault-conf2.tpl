@@ -51,3 +51,13 @@ if [${count} != 1]; then
 else
     sudo echo "hola mundo" >> fuera.txt
 fi
+
+
+#vault operator init -format=json > /home/ec2-user/key.json
+#vault operator init -key-shares=3 -key-threshold=2 | tee /root/vault-initialization.txt
+#sudo vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
+#sudo vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
+#sudo vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
+#sudo echo "hola mundo" >> hola.txt
+#aws s3 cp key.json s3://pedroform-bucket/key-node-test-${count}.js
+#sudo rm -r keys.json
