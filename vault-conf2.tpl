@@ -11,25 +11,28 @@ sudo yum -y install jq
 # Create Vault configuration
 sudo mkdir -p /etc/vault.d
 cat << EOT | sudo tee /etc/vault.d/vault.hcl
-ha_storage "raft" {
-   path    = "opt/ha-raft_1/"
-   node_id = "vault_1"
-}
+%{ for index in private_ips_array ~}
+    ha_storage "raft" {
+    path    = "opt/ha-raft_1/"
+    node_id = "vault_1"
+    }
 
-storage "file" {
-   path = "opt/vault-storage-file/"
-}
+    storage "file" {
+    path = "opt/vault-storage-file/"
+    }
 
-listener "tcp" {
-   address = "127.0.0.1:8210"
-   cluster_address = "127.0.0.1:8211"
-   tls_disable = true
-}
+    listener "tcp" {
+        address = "127.0.0.1:8210"
+        cluster_address = "127.0.0.1:8211"
+        tls_disable = true
+    }
 
-ui = true
-disable_mlock = true
-api_addr = "http://127.0.0.1:8210"
-cluster_addr = "http://127.0.0.1:8211"
+    ui = true
+    disable_mlock = true
+    api_addr = "http://127.0.0.1:8210"
+    cluster_addr = "http://127.0.0.1:8211"
+%{ endfor ~}
+
 EOT
 
 
@@ -54,7 +57,7 @@ fi
 
 
 #vault operator init -format=json > /home/ec2-user/key.json
-#vault operator init -key-shares=3 -key-threshold=2 | tee /root/vault-initialization.txt
+#vault operator init -key-shares=3 -key-threshold=2 -format=json | tee /home/ec2-user/key.json
 #sudo vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 #sudo vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
 #sudo vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")

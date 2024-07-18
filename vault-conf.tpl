@@ -27,7 +27,7 @@ listener "tcp" {
 
 storage "raft" {
   path    = "/opt/vault/data"
-  node_id = "node1"
+  node_id = "node${count}"
 
         retry_join {
             leader_api_addr         = "http://10.0.1.100:8200"
@@ -35,7 +35,6 @@ storage "raft" {
 
         retry_join {
             leader_api_addr         = "http://10.0.2.100:8200"
-        }
         }
 
         retry_join {
