@@ -43,7 +43,7 @@ resource "aws_iam_role_policy_attachment" "vault_kms_attach" {
   policy_arn = aws_iam_policy.kms_access.arn
 }
 
-resource "aws_iam__policy" "kms_access" {
+resource "aws_iam_policy" "kms_access" {
   name = "kms"
 
   policy = jsonencode({
