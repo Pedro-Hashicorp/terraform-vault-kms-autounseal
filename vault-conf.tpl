@@ -64,5 +64,5 @@ sudo vault operator unseal $(jq -r '.unseal_keys_hex[0]' "key.json")
 sudo vault operator unseal $(jq -r '.unseal_keys_hex[1]' "key.json")
 sudo vault operator unseal $(jq -r '.unseal_keys_hex[2]' "key.json")
 sudo echo "hola mundo" >> hola.txt
-aws s3 cp key.json s3://pedroform-bucket/key-node-${count}.js
+aws s3 cp key.json s3://pedroform-bucket/key-node-test-${count}.js
 sudo rm -r keys.json
