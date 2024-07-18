@@ -64,7 +64,7 @@ resource "aws_iam_instance_profile" "iam-for-ec2-create-s33" {
   name = "iam-for-ec2-create-s33"
   role = aws_iam_role.s3_access_role.name
 }
-resource "aws_iam_instance_profile" "iam-for-ec2-create-s33" {
+resource "aws_iam_instance_profile" "attach-kms" {
   name = "kms-for-ec2"
   role = aws_iam_role.kms_access
 }
