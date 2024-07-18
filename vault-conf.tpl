@@ -38,8 +38,6 @@ EOT
 
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
-
-# Start Vault
 sudo systemctl enable vault
 sudo systemctl start vault
 
@@ -53,10 +51,8 @@ source /etc/environment
 
 if [${count} != 1]; then
     echo "hola mundo" >> dentro.txt
-
 else
     echo "hola mundo" >> fuera.txt
-
 fi
 
 vault operator init -format=json > /home/ec2-user/key.json
