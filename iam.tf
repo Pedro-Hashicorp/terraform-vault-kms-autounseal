@@ -57,7 +57,7 @@ resource "aws_iam_policy" "kms_access" {
         "kms:GenerateDataKey",
         "kms:DescribeKey"
       ],
-      "Resource": "arn:aws:kms:eu-west-1:975050084720:key/ec11d974-ffe5-4823-b285-5c0e0907eb98"
+      "Resource": aws_kms_key.vault_unseal.arn
     }
   ]
 })

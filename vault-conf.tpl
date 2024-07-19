@@ -25,6 +25,11 @@ listener "tcp" {
     tls_disable = 1
 }
 
+seal "awskms" {
+  region     = "eu-west-1"
+  kms_key_id = "${kms_key_id}"
+}
+
 storage "raft" {
   path    = "/opt/vault/data"
   node_id = "node${count}"

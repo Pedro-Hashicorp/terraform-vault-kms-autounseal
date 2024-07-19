@@ -2,6 +2,13 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+
+resource "aws_kms_key" "vault_unseal" {
+  description             = "KMS Key for Vault Auto-Unseal"
+  deletion_window_in_days = 10
+}
+
+
 #Create a Route table for the VPC
 resource "aws_route_table" "my_public_rt" {
   vpc_id = aws_vpc.my_vpc.id
@@ -52,5 +59,6 @@ resource "aws_instance" "ec2_node" {
  user_data = templatefile("${path.module}/vault-conf.tpl",{
   private_ip = var.private_ips[count.index],
   count = count.index +1,
+  kms_key = aws_kms_key.vault_unseal.id
  })
 }
