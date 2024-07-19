@@ -58,7 +58,11 @@ resource "aws_iam_policy" "kms_access" {
         "kms:DescribeKey"
       ],
       "Resource": aws_kms_key.vault_unseal.arn
-    }
+    },{
+        Action   = "ec2:DescribeInstances",
+        Effect   = "Allow",
+        Resource = "*"
+      }
   ]
 })
   

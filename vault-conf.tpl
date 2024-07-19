@@ -27,7 +27,7 @@ listener "tcp" {
 
 seal "awskms" {
   region     = "eu-west-1"
-  kms_key_id = "${kms_key_id}"
+  kms_key_id = "${kms_key}"
 }
 
 storage "raft" {
