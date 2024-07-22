@@ -9,8 +9,6 @@ sudo yum install -y vault
 sudo yum -y install jq
 export VAULT_ADDR=http://0.0.0.0:8200
 
-echo ${vault_service} | base64 --decode > /etc/systemd/system/vault.service
-
 echo "export VAULT_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 
