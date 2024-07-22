@@ -65,5 +65,5 @@ chown --recursive vault:vault /etc/vault.d
 chmod 640 /etc/vault.d/vault.hcl
 chown root:vault /opt/vault/vault.hclic
 chmod 0640 /opt/vault/vault.hclic
-sudo vault operator init -recovery-shares=3 -recovery-threshold=2 | tee /root/config-files/initialization.txt
+sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
 
