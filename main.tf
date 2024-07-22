@@ -62,7 +62,5 @@ resource "aws_instance" "ec2_node" {
   private_ip = var.private_ips[count.index],
   count = count.index +1,
   kms_key = aws_kms_key.vault_unseal.id
-  vault_service   = filebase64("${path.module}/vault.service"),
-
  }))
 }
