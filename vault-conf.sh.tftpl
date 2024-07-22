@@ -8,6 +8,9 @@ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinu
 sudo yum -y install vault
 sudo yum -y install jq
 export VAULT_ADDR=http://0.0.0.0:8200
+
+echo ${vault_service} | base64 --decode > /etc/systemd/system/vault.service
+
 echo "export VAULT_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 
@@ -50,18 +53,14 @@ ui="true"
 EOT
 
 
+
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
 sudo systemctl enable vault
 sudo systemctl start vault
+sudo vault operator init -recovery-shares=3 -recovery-threshold=2 | tee /root/config-files/initialization.txt
+
 
 sudo mkdir -p /opt/vault/data
 sudo vault server -config=/etc/vault.d/vault.hcl
-
-if [${count} != 1]; then
-    sudo echo "hola mundo" >> dentro.txt
-else
-    sudo echo "hola mundo" >> fuera.txt
-fi
-
 
