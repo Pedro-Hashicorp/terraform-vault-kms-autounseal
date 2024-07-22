@@ -22,7 +22,11 @@ variable "instance_type" {
   default = "t2.micro"
 
 }
-
+variable "name_prefix" {
+  type        = string
+  description = "Prefix to be used for naming resources"
+  default     = "vault-cluster"
+}
 variable "private_ips" {
   type        = list(string)
   description = "Private Ips of different 3 instances"
