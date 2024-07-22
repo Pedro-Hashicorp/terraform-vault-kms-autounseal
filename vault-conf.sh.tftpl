@@ -5,7 +5,13 @@ sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 
 # Install Vault
-sudo yum -y install vault
+curl -fsSL -o /tmp/vault.zip https://releases.hashicorp.com/vault/1.15.6+ent/vault_1.15.6+ent_linux_amd64.zip
+unzip -o -d /usr/local/bin/ /tmp/vault.zip
+sudo chown root:root /usr/local/bin/vault
+setcap cap_ipc_lock=+ep /usr/local/bin/vault
+setcap cap_net_bind_service=+ep /usr/local/bin/vault
+useradd --system --home /etc/vault.d --shell /bin/false vault
+
 sudo yum -y install jq
 export VAULT_ADDR=http://0.0.0.0:8200
 
@@ -63,4 +69,10 @@ sudo vault operator init -recovery-shares=3 -recovery-threshold=2 | tee /root/co
 
 sudo mkdir -p /opt/vault/data
 sudo vault server -config=/etc/vault.d/vault.hcl
+
+chown --recursive vault:vault /opt/vault
+chown --recursive vault:vault /etc/vault.d
+chmod 640 /etc/vault.d/vault.hcl
+chown root:vault /opt/vault/vault.hclic
+chmod 0640 /opt/vault/vault.hclic
 
