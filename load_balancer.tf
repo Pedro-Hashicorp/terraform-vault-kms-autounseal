@@ -38,8 +38,8 @@ resource "aws_lb_listener" "http_listener" {
 }
 
 resource "aws_lb_target_group_attachment" "web_instance_attachment" {
-for_each          = aws_instance.ec2_node[*]
+    count            = length(aws_instance.ec2_node)
   target_group_arn = aws_lb_target_group.vault_group.arn
-  target_id         = each.value.id
+  target_id        = aws_instance.ec2_node[count.index].id
   port             = 80
 }
