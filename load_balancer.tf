@@ -1,5 +1,5 @@
 resource "aws_lb" "vault_lb" {
-  name = "vault_lb"
+  name = "vault-lb"
   internal = false
   load_balancer_type = "application"
   security_groups = [aws_security_group.my_sg]
@@ -12,7 +12,7 @@ resource "aws_lb" "vault_lb" {
 
 # Create a Target Group
 resource "aws_lb_target_group" "vault_group" {
-  name     = "vault_group"
+  name     = "vault-group"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.my_vpc.id  # Replace with your VPC ID
