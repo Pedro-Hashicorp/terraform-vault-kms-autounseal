@@ -2,7 +2,7 @@ resource "aws_lb" "vault_lb" {
   name = "vault-lb"
   internal = false
   load_balancer_type = "application"
-  security_groups = [aws_security_group.my_sg]
+  security_groups = [aws_security_group.my_sg.id]
   subnets = aws_subnet.privateSubnets[*].id
 
     enable_deletion_protection = false
@@ -38,7 +38,8 @@ resource "aws_lb_listener" "http_listener" {
 }
 
 resource "aws_lb_target_group_attachment" "web_instance_attachment" {
+for_each          = aws_instance.ec2_node
   target_group_arn = aws_lb_target_group.vault_group.arn
-  target_id        = aws_instance.ec2_node[*].id
+  target_id         = each.value.id
   port             = 80
 }
