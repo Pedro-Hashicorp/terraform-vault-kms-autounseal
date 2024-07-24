@@ -1,4 +1,12 @@
 #!/bin/bash
+
+
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 3600"`
+PUBLIC_HOSTNAME=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/public-hostname`
+PUBLIC_IP=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/public-ipv4`
+LOCAL_IP=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4`
+CLUSTER_NAME=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/tags/instance/Name`
+
 # Update and install necessary packags
 sudo yum -y update
 sudo yum install -y yum-utils
@@ -8,11 +16,27 @@ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinu
 sudo yum install -y vault
 sudo yum -y install jq
 export VAULT_ADDR=http://0.0.0.0:8200
-
 echo "export VAULT_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
-
 source /etc/environment
+
+
+
+#Import certificates
+echo ${cert_gen_script} | base64 --decode > /tmp/cert-gen.sh
+echo ${ca_cert} | base64 --decode > /tmp/vault-ca.pem
+echo ${ca_key} | base64 --decode > /tmp/vault-ca.key
+
+# Generate certificates
+cd /tmp/
+chmod +x /tmp/cert-gen.sh
+./cert-gen.sh $LOCAL_IP $PUBLIC_IP
+cp /tmp/vault-cert.pem /opt/vault/tls/vault-cert.pem
+cp /tmp/vault-key.pem /opt/vault/tls/vault-key.pem
+cp /tmp/vault-ca.pem /opt/vault/tls/vault-ca.pem
+cp /tmp/vault-ca.pem /usr/local/share/ca-certificates/vault-ca.crt
+update-ca-certificates
+
 
 # Create Vault configuration
 sudo mkdir -p /etc/vault.d
@@ -22,8 +46,10 @@ api_addr      = "http://${private_ip}:8200"
 disable_mlock = true
 
 listener "tcp" {
-    address     = "0.0.0.0:8200"
-    tls_disable = 1
+    address            = "0.0.0.0:8200"
+    tls_cert_file      = "/opt/vault/tls/vault-cert.pem"
+    tls_key_file       = "/opt/vault/tls/vault-key.pem"
+    tls_client_ca_file = "/opt/vault/tls/vault-ca.pem"
 }
 
 seal "awskms" {
@@ -37,20 +63,27 @@ storage "raft" {
 
         retry_join {
             leader_api_addr         = "http://10.0.1.100:8200"
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+            leader_client_cert_file = "/opt/vault/tls/vault-cert.pem"
+            leader_client_key_file  = "/opt/vault/tls/vault-key.pem"
         }
 
         retry_join {
             leader_api_addr         = "http://10.0.2.100:8200"
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+            leader_client_cert_file = "/opt/vault/tls/vault-cert.pem"
+            leader_client_key_file  = "/opt/vault/tls/vault-key.pem"
         }
 
         retry_join {
             leader_api_addr         = "http://10.0.3.100:8200"
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+            leader_client_cert_file = "/opt/vault/tls/vault-cert.pem"
+            leader_client_key_file  = "/opt/vault/tls/vault-key.pem"
         }
 }
 ui="true"
 EOT
-
-
 
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
