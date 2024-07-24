@@ -61,6 +61,9 @@ resource "aws_instance" "ec2_node" {
  user_data = base64encode(templatefile("${path.module}/vault-conf.sh.tftpl",{
   private_ip = var.private_ips[count.index],
   count = count.index +1,
-  kms_key = aws_kms_key.vault_unseal.id
+  kms_key = aws_kms_key.vault_unseal.id,
+  cert_gen_script = filebase64("${path.module}/utils/cert-gen.sh"),
+  ca_cert         = filebase64("${path.module}/utils/vault-ca/vault-ca.pem"),
+  ca_key          = filebase64("${path.module}/utils/vault-ca/vault-ca.key")
  }))
 }

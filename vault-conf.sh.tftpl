@@ -99,4 +99,10 @@ chmod 640 /etc/vault.d/vault.hcl
 chown root:vault /opt/vault/vault.hclic
 chmod 0640 /opt/vault/vault.hclic
 sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
-
+# Set file ownership and permissions
+chown --recursive vault:vault /opt/vault
+chown --recursive vault:vault /etc/vault.d
+chown root:root /opt/vault/tls/*.pem
+chown root:vault /opt/vault/tls/vault-key.pem
+chmod 0640 /opt/vault/tls/vault-key.pem
+chmod 0644 /opt/vault/tls/vault-cert.pem /opt/vault/tls/vault-ca.pem
