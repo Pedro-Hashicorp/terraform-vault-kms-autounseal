@@ -34,9 +34,9 @@ chmod +x /tmp/cert-gen.sh
 cp /tmp/vault-cert.pem /opt/vault/tls/vault-cert.pem
 cp /tmp/vault-key.pem /opt/vault/tls/vault-key.pem
 cp /tmp/vault-ca.pem /opt/vault/tls/vault-ca.pem
+cp /opt/vault/tls/vault-ca.pem /etc/pki/ca-trust/source/anchors/vault-ca.pem
 cp /tmp/vault-ca.pem /usr/local/share/ca-certificates/vault-ca.crt
-update-ca-certificates
-
+sudo update-ca-trust
 
 # Create Vault configuration
 sudo mkdir -p /etc/vault.d
@@ -106,3 +106,4 @@ chown root:root /opt/vault/tls/*.pem
 chown root:vault /opt/vault/tls/vault-key.pem
 chmod 0640 /opt/vault/tls/vault-key.pem
 chmod 0644 /opt/vault/tls/vault-cert.pem /opt/vault/tls/vault-ca.pem
+chmod 0644 /etc/pki/ca-trust/source/anchors/vault-ca.pem /etc/pki/ca-trust/source/anchors/vault-ca.pem
