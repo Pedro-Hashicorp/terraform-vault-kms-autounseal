@@ -15,10 +15,10 @@ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinu
 # Install Vault
 sudo yum install -y vault
 sudo yum -y install jq
-export VAULT_ADDR=https://0.0.0.0:8200
-echo "export VAULT_ADDR=https://0.0.0.0:8200" | sudo tee -a /etc/environment
-echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
-source /etc/environment
+#export VAULT_ADDR=https://0.0.0.0:8200
+#echo "export VAULT_ADDR=https://0.0.0.0:8200" | sudo tee -a /etc/environment
+#echo "export VAULT_API_ADDR=https://0.0.0.0:8200" | sudo tee -a /etc/environment
+#source /etc/environment
 
 
 
@@ -41,8 +41,8 @@ update-ca-certificates
 # Create Vault configuration
 sudo mkdir -p /etc/vault.d
 cat << EOT | sudo tee /etc/vault.d/vault.hcl
-cluster_addr  = "https://${private_ip}:8201"
-api_addr      = "https://${private_ip}:8200"
+cluster_addr  = "https://$LOCAL_IP:8201"
+api_addr      = "https://$PUBLIC_IP:8200"
 disable_mlock = true
 
 listener "tcp" {
