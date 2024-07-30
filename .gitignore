@@ -1,7 +1,6 @@
 .terraform
 .terraform/*
 .terraform.lock.hcl
-*.pem
+portiz.pem
 secrets.tf
-*.key
 .DS_*
