@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the CA certificate's validity period in days
-VALIDITY_DAYS=3
+VALIDITY_DAYS=365
 
 # Create directory for the CA
 mkdir vault-ca

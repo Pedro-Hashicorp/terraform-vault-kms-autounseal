@@ -10,7 +10,7 @@ fi
 # Assign the first and second argument to IP_ADDRESS1 and IP_ADDRESS2
 IP_ADDRESS1=$1
 IP_ADDRESS2=$2
-VALIDITY_DAYS=3
+VALIDITY_DAYS=365
 
 # Generate a private key for the server
 openssl genrsa -out "vault-key.pem" 2048
