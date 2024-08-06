@@ -11,6 +11,7 @@ CLUSTER_NAME=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/
 initialize_vault() {
   echo "Initializing Vault..."
   sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
+  echo "hola mundo2" > hola2.txt 
 }
 
 # Update and install necessary packags
@@ -25,8 +26,6 @@ sudo export VAULT_ADDR=https://127.0.0.1:8200
 echo "export VAULT_ADDR=https://127.0.0.1:8200" | sudo tee -a /etc/environment
 echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 source /etc/environment
-
-
 
 #Import CA certificates and pass Certicate gen script
 echo ${cert_gen_script} | base64 --decode > /tmp/cert-gen.sh
