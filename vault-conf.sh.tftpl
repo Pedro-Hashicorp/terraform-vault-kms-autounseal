@@ -15,11 +15,7 @@ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinu
 # Install Vault
 sudo yum install -y vault
 sudo yum -y install jq
-sudo su
-echo "export VAULT_ADDR=https://$LOCAL_IP:8200" | sudo tee -a /etc/environment
-echo "export VAULT_API_ADDR=http://$PUBLIC_IP:8200" | sudo tee -a /etc/environment
-source /etc/environment
-export VAULT_ADDR=http://127.0.0.1:8200
+sudo export VAULT_ADDR=https://127.0.0.1:8200
 source /etc/environment
 
 
@@ -49,7 +45,9 @@ disable_mlock = true
 
 listener "tcp" {
     address            = "0.0.0.0:8200"
-    tls_disable = 1
+    tls_cert_file      = "/opt/vault/tls/vault-cert.pem"
+    tls_key_file       = "/opt/vault/tls/vault-key.pem"
+    tls_client_ca_file = "/opt/vault/tls/vault-ca.pem"
 }
 
 seal "awskms" {
@@ -63,17 +61,19 @@ storage "raft" {
 
         retry_join {
             leader_api_addr         = "https://10.0.1.100:8200"
-            
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
         }
 
         retry_join {
             leader_api_addr         = "https://10.0.2.100:8200"
-            
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+
         }
 
         retry_join {
             leader_api_addr         = "https://10.0.3.100:8200"
-        
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+
         }
 }
 ui="true"
@@ -92,7 +92,7 @@ chown --recursive vault:vault /etc/vault.d
 chmod 640 /etc/vault.d/vault.hcl
 chown root:vault /opt/vault/vault.hclic
 chmod 0640 /opt/vault/vault.hclic
-sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
+# sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
 # Set file ownership and permissions
 chown --recursive vault:vault /opt/vault
 chown --recursive vault:vault /etc/vault.d
