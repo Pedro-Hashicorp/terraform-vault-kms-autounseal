@@ -26,6 +26,7 @@ source /etc/environment
 echo ${cert_gen_script} | base64 --decode > /tmp/cert-gen.sh
 echo ${ca_cert} | base64 --decode > /tmp/vault-ca.pem
 echo ${ca_key} | base64 --decode > /tmp/vault-ca.key
+echo ${vault_license} > /opt/vault/vault.hclic
 
 # Generate certificates
 cd /tmp/
@@ -80,6 +81,9 @@ storage "raft" {
         }
 }
 ui="true"
+
+# Enterprise license_path
+license_path = "/opt/vault/vault.hclic"
 EOT
 
 mkdir -p /opt/vault/data
