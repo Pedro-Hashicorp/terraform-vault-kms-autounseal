@@ -116,7 +116,7 @@ chmod 0644 /etc/pki/ca-trust/source/anchors/vault-ca.pem /etc/pki/ca-trust/sourc
 sudo systemctl enable vault
 sudo systemctl start vault
 
-if [ "$CURRENT_IP" == "$LOCAL_IP" ]; then
+if [ "$PRIMARY_IP" == "$LOCAL_IP" ]; then
   initialize_vault
 else
     sleep 10
