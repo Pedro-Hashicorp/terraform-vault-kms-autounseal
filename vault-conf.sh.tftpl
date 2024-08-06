@@ -22,7 +22,7 @@ source /etc/environment
 
 
 
-#Import certificates
+#Import CA certificates and pass Certicate gen script
 echo ${cert_gen_script} | base64 --decode > /tmp/cert-gen.sh
 echo ${ca_cert} | base64 --decode > /tmp/vault-ca.pem
 echo ${ca_key} | base64 --decode > /tmp/vault-ca.key
@@ -52,6 +52,7 @@ listener "tcp" {
     tls_client_ca_file = "/opt/vault/tls/vault-ca.pem"
 }
 
+# Auto unseal using aws kms
 seal "awskms" {
   region     = "eu-west-1"
   kms_key_id = "${kms_key}"
@@ -88,14 +89,14 @@ sudo systemctl start vault
 
 sudo mkdir -p /opt/vault/data
 sudo vault server -config=/etc/vault.d/vault.hcl
+sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
 
+# Set file ownership and permissions
 chown --recursive vault:vault /opt/vault
 chown --recursive vault:vault /etc/vault.d
 chmod 640 /etc/vault.d/vault.hcl
 chown root:vault /opt/vault/vault.hclic
 chmod 0640 /opt/vault/vault.hclic
-# sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
-# Set file ownership and permissions
 chown --recursive vault:vault /opt/vault
 chown --recursive vault:vault /etc/vault.d
 chown root:root /opt/vault/tls/*.pem
