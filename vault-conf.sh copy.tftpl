@@ -46,6 +46,9 @@ disable_mlock = true
 listener "tcp" {
     address            = "0.0.0.0:8200"
     tls_disable = 1
+    tls_cert_file      = "/opt/vault/tls/vault-cert.pem"
+    tls_key_file       = "/opt/vault/tls/vault-key.pem"
+    tls_client_ca_file = "/opt/vault/tls/vault-ca.pem"
 }
 
 seal "awskms" {
@@ -59,17 +62,23 @@ storage "raft" {
 
         retry_join {
             leader_api_addr         = "https://10.0.1.100:8200"
-            
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+            leader_client_cert_file = "/opt/vault/tls/vault-cert.pem"
+            leader_client_key_file  = "/opt/vault/tls/vault-key.pem"
         }
 
         retry_join {
             leader_api_addr         = "https://10.0.2.100:8200"
-            
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+            leader_client_cert_file = "/opt/vault/tls/vault-cert.pem"
+            leader_client_key_file  = "/opt/vault/tls/vault-key.pem"
         }
 
         retry_join {
             leader_api_addr         = "https://10.0.3.100:8200"
-        
+            leader_ca_cert_file     = "/opt/vault/tls/vault-ca.pem"
+            leader_client_cert_file = "/opt/vault/tls/vault-cert.pem"
+            leader_client_key_file  = "/opt/vault/tls/vault-key.pem"
         }
 }
 ui="true"
