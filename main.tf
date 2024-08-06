@@ -26,7 +26,7 @@ resource "aws_s3_bucket" "my_bucket" {
   }
 }
 
-#create an S3 bucket to store the unseal keys
+#create an S3 bucket acl to make it private
 resource "aws_s3_bucket_acl" "s3_acl" {
   bucket = aws_s3_bucket.my_bucket.id
   acl = "private"
