@@ -16,6 +16,8 @@ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinu
 sudo yum install -y vault
 sudo yum -y install jq
 sudo export VAULT_ADDR=https://127.0.0.1:8200
+echo "export VAULT_ADDR=https://127.0.0.1:8200" | sudo tee -a /etc/environment
+echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 source /etc/environment
 
 
