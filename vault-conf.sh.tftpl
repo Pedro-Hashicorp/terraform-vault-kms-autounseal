@@ -117,6 +117,7 @@ sudo systemctl enable vault
 sudo systemctl start vault
 
 if [ "$PRIMARY_IP" == "$LOCAL_IP" ]; then
+   echo "hola mundo" > hola.txt  
   initialize_vault
 else
     sleep 10
