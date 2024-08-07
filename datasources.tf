@@ -31,3 +31,4 @@ data "aws_subnet" "subnets" {
 data "aws_s3_bucket" "pedroform"{
   bucket = "pedroform-bucket"
 }
+
