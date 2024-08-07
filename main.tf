@@ -73,18 +73,23 @@ resource "aws_instance" "ec2_node" {
   ca_key          = filebase64("${path.module}/utils/vault-ca/vault-ca.key"),
   vault_license   = filebase64("${path.module}/vault-license.hclic")
  }))
+}
+resource "null_resource" "execute_command" {
+  count = 1
 
- provisioner "remote-exec" {
-    when    = count.index -1 == 0 ? "create" : "never"
-    inline  = [
-      "sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json"
-    ]
-
+  provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
       private_key = file("./portiz.pem")
-      host        = self.public_ip
+      host        = aws_instance.ec2_node[0].public_ip
     }
- }
+
+    inline = [
+      "echo 'Hello, World!' > /tmp/hello.txt",
+      "sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json"
+    ]
+  }
+
+  depends_on = [aws_instance.ec2_node]
 }
