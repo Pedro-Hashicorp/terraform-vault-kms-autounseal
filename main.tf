@@ -19,7 +19,6 @@ resource "aws_route_table" "my_public_rt" {
 }
 
 resource "aws_s3_bucket" "my_bucket" {
-  count = length(data.aws_s3_bucket.pedroform.id) == 0 ? 1 : 0
   bucket = "pedroform-bucket"  # Replace with your unique bucket name
   tags = {
     Name        = "MyBucket"
