@@ -70,6 +70,7 @@ resource "aws_instance" "ec2_node" {
   cert_gen_script = filebase64("${path.module}/utils/cert-gen.sh"),
   ca_cert         = filebase64("${path.module}/utils/vault-ca/vault-ca.pem"),
   ca_key          = filebase64("${path.module}/utils/vault-ca/vault-ca.key"),
-  vault_license   = filebase64("${path.module}/vault-license.hclic")
+  vault_license   = filebase64("${path.module}/vault-license.hclic"),
+  instance_id = aws_instance.ec2_node[0].id
   }))
 }
