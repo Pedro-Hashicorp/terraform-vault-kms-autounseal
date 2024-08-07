@@ -112,7 +112,7 @@ sudo systemctl enable vault
 sudo systemctl start vault
 #sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
 
-if [ "$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" == ${instance_id} ]; then
+if [ "$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" == "adsad" ]; then
     sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json  
     echo "This is the instance" > /tmp/special_command_output.txt
 else
