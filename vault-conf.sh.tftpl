@@ -111,6 +111,7 @@ chown root:vault /opt/vault/tls/vault-key.pem
 chmod 0640 /opt/vault/tls/vault-key.pem
 chmod 0644 /opt/vault/tls/vault-cert.pem /opt/vault/tls/vault-ca.pem
 chmod 0644 /etc/pki/ca-trust/source/anchors/vault-ca.pem /etc/pki/ca-trust/source/anchors/vault-ca.pem
+chmod 777 /home/ec2-user/*
 
 sudo systemctl enable vault
 sudo systemctl start vault
