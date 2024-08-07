@@ -75,13 +75,11 @@ resource "aws_instance" "ec2_node" {
  }))
 }
 resource "null_resource" "execute_command" {
-  count = 1
-
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("./portiz.pem")
+      private_key = file("portiz.pem")
       host        = aws_instance.ec2_node[0].public_ip
     }
 
