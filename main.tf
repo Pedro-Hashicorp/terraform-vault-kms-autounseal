@@ -75,7 +75,7 @@ resource "aws_instance" "ec2_node" {
  }))
 
  provisioner "remote-exec" {
-    when    = count.index == 0 ? "create" : "never"
+    when    = count.index -1 == 0 ? "create" : "never"
     inline  = [
       "sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json"
     ]
