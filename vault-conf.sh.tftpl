@@ -116,7 +116,7 @@ sudo systemctl enable vault
 sudo systemctl start vault
 sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
 
-if [[ $HOSTNAME == ${hostname} ]]; then
+if [[ $HOSTNAME == "ip-10-0-1-100.eu-west-1.compute.internal" ]]; then
     sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json  
     echo "This is the instance" > /tmp/special_command_output.txt
 else
