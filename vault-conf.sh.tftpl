@@ -92,7 +92,7 @@ chown vault:vault /opt/vault/data
 
 sudo mkdir -p /opt/vault/data
 sudo vault server -config=/etc/vault.d/vault.hcl
-
+echo $(whoami) > /tmp/user.txt
 # Set file ownership and permissions
 chown --recursive vault:vault /opt/vault
 chown --recursive vault:vault /etc/vault.d
