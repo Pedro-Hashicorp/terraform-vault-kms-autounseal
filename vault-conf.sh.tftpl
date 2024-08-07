@@ -111,6 +111,7 @@ chmod 777 /home/ec2-user/*
 sudo systemctl enable vault
 sudo systemctl start vault
 #sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 3600"`
 echo $TOKEN > hola.txt
 if [ "$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4)" == "10.0.1.100" ]; then
     sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json  
