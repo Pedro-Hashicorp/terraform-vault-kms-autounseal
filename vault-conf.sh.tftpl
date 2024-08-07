@@ -115,9 +115,8 @@ chmod 0644 /etc/pki/ca-trust/source/anchors/vault-ca.pem /etc/pki/ca-trust/sourc
 sudo systemctl enable vault
 sudo systemctl start vault
 
-if [ "$PRIMARY_IP" == "$LOCAL_IP" ]; then
-   echo "hola mundo" > hola.txt  
-  initialize_vault
+if [ $(hostname) == "dev-node-1" ]; then
+  echo "This is the first instance" > /tmp/special_command_output.txt
 else
-    sleep 10
+  echo "This is not the first instance" > /tmp/regular_command_output.txt
 fi
