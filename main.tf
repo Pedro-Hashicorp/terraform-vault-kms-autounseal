@@ -86,4 +86,5 @@ resource "aws_instance" "ec2_node" {
       private_key = file("./portiz.pem")
       host        = self.public_ip
     }
+ }
 }
