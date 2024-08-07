@@ -19,10 +19,14 @@ resource "aws_route_table" "my_public_rt" {
 }
 
 resource "aws_s3_bucket" "my_bucket" {
+  count = length(data.aws_s3_bucket.pedroform.id) == 0 ? 1 : 0
   bucket = "pedroform-bucket"  # Replace with your unique bucket name
   tags = {
     Name        = "MyBucket"
     Environment = "Dev"
+  }
+  lifecycle {
+    prevent_destroy = true
   }
 }
 
@@ -67,6 +71,19 @@ resource "aws_instance" "ec2_node" {
   cert_gen_script = filebase64("${path.module}/utils/cert-gen.sh"),
   ca_cert         = filebase64("${path.module}/utils/vault-ca/vault-ca.pem"),
   ca_key          = filebase64("${path.module}/utils/vault-ca/vault-ca.key"),
-  vault_license   = "${path.module}/vault-license.hclic"
+  vault_license   = filebase64("${path.module}/vault-license.hclic")
  }))
+
+ provisioner "remote-exec" {
+    when    = count.index == 0 ? "create" : "never"
+    inline  = [
+      "sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json | tee /home/ec2-user/initialization.json"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("./portiz.pem")
+      host        = self.public_ip
+    }
 }

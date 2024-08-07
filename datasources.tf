@@ -27,3 +27,7 @@ data "aws_subnet" "subnets" {
 
   depends_on = [aws_subnet.privateSubnets]
 }
+
+data "aws_s3_bucket" "pedroform"{
+  bucket = "pedroform-bucket"
+}
