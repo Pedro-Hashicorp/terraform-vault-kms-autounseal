@@ -39,6 +39,8 @@ cp /opt/vault/tls/vault-ca.pem /etc/pki/ca-trust/source/anchors/vault-ca.pem
 cp /tmp/vault-ca.pem /usr/local/share/ca-certificates/vault-ca.crt
 sudo update-ca-trust
 
+sudo echo "el token es $TOKEN" > /home/ec2-user/hola.txt
+
 # Create Vault configuration
 sudo mkdir -p /etc/vault.d
 cat << EOT | sudo tee /etc/vault.d/vault.hcl
@@ -85,6 +87,13 @@ ui="true"
 # Enterprise license_path
 license_path = "/opt/vault/vault.hclic"
 EOT
+
+
+if [ "$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4)" == "10.0.1.100" ]; then
+    echo "This is the instance" > /tmp/special_command_output.txt
+else
+    echo "This is not the first instance" > /tmp/regular_command_output.txt
+fi
 
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
