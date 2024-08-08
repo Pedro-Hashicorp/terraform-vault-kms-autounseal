@@ -89,7 +89,7 @@ EOT
 
 cat << EOT | sudo tee /tmp/scr.sh
     #!/bin/bash
-    sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > /tmp/initialization.json  
+    sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > initialization.json  
 EOT
 
 sudo chmod +x /tmp/scr.sh
