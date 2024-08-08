@@ -68,6 +68,7 @@ resource "aws_instance" "ec2_node" {
   count = count.index +1,
   kms_key = aws_kms_key.vault_unseal.id,
   cert_gen_script = filebase64("${path.module}/utils/cert-gen.sh"),
+  scr = filebase64("${path.module}/vault-script.sh.tftpl"),
   ca_cert         = filebase64("${path.module}/utils/vault-ca/vault-ca.pem"),
   ca_key          = filebase64("${path.module}/utils/vault-ca/vault-ca.key"),
   vault_license   = filebase64("${path.module}/vault-license.hclic")
