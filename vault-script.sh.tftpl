@@ -87,10 +87,6 @@ license_path = "/opt/vault/vault.hclic"
 EOT
 
 
-sleep 10
-sudo chmod +x /home/ec2-user/scr.sh
-sudo /home/ec2-user/scr.sh
-
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
 
@@ -123,6 +119,7 @@ EOF
 sleep 10
 sudo chmod +x /home/ec2-user/scr.sh
 sudo /home/ec2-user/scr.sh
+sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > initialization.json  
 
 
 TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 3600"`
