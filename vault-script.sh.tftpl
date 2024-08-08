@@ -92,8 +92,8 @@ cat << EOT | sudo tee /tmp/scr.sh
     sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > /tmp/initialization.json  
 EOT
 
-chmod +x /tmp/scr.sh
-./scr.sh
+sudo chmod +x /tmp/scr.sh
+sudo ./scr.sh
 
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
