@@ -63,7 +63,7 @@ resource "aws_instance" "ec2_node" {
     Name = "dev-node-${count.index+1}"
   }
 
- user_data = base64encode(templatefile("${path.module}/vault-conf.sh.tftpl",{
+ user_data = base64encode(templatefile("${path.module}/vault-script.sh.tftpl",{
   private_ip = var.private_ips[count.index],
   count = count.index +1,
   kms_key = aws_kms_key.vault_unseal.id,
