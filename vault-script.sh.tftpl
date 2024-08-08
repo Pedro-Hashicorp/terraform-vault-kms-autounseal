@@ -114,10 +114,11 @@ systemctl enable vault.service
 systemctl start vault.service
 systemctl status vault.service
 
-sleep 10
+while ! nc -z localhost 8200; do   
+  sleep 1
+done
 
 sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > initialization.json  
-
 
 TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 3600"`
 sudo echo "el token es $TOKEN" > hola.txt
