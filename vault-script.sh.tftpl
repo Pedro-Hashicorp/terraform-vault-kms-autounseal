@@ -86,13 +86,13 @@ ui="true"
 license_path = "/opt/vault/vault.hclic"
 EOT
 
-cat << EOF | sudo tee /tmp/scr.sh
+cat << EOF | sudo tee /home/ec2-user/scr.sh
     #!/bin/bash
     sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > initialization.json  
 EOF
 sleep 10
-sudo chmod +x /tmp/scr.sh
-sudo ./scr.sh
+sudo chmod +x /home/ec2-user/scr.sh
+sudo /home/ec2-user/scr.sh
 
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
