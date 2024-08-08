@@ -26,7 +26,7 @@ echo ${vault_service} | base64 --decode > /etc/systemd/system/vault.service
 echo ${cert_gen_script} | base64 --decode > /tmp/cert-gen.sh
 echo ${ca_cert} | base64 --decode > /tmp/vault-ca.pem
 echo ${ca_key} | base64 --decode > /tmp/vault-ca.key
-# echo ${vault_license} > /opt/vault/vault.hclic
+# echo vault_license > /opt/vault/vault.hclic
 
 # Generate certificates
 cd /tmp/
