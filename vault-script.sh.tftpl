@@ -40,7 +40,6 @@ cp /tmp/vault-ca.pem /usr/local/share/ca-certificates/vault-ca.crt
 sudo update-ca-trust
 
 sudo echo "el token es $TOKEN" > /home/ec2-user/hola.txt
-
 # Create Vault configuration
 sudo mkdir -p /etc/vault.d
 cat << EOT | sudo tee /etc/vault.d/vault.hcl
