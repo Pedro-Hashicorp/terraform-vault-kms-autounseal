@@ -86,10 +86,7 @@ ui="true"
 license_path = "/opt/vault/vault.hclic"
 EOT
 
-cat << EOF | sudo tee /home/ec2-user/scr.sh
-    #!/bin/bash
-    sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > initialization.json  
-EOF
+
 sleep 10
 sudo chmod +x /home/ec2-user/scr.sh
 sudo /home/ec2-user/scr.sh
@@ -118,7 +115,16 @@ chmod 0644 /etc/pki/ca-trust/source/anchors/vault-ca.pem /etc/pki/ca-trust/sourc
 
 sudo systemctl enable vault
 sudo systemctl start vault
+
+cat << EOF | sudo tee /home/ec2-user/scr.sh
+    #!/bin/bash
+    sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > initialization.json  
+EOF
 sleep 10
+sudo chmod +x /home/ec2-user/scr.sh
+sudo /home/ec2-user/scr.sh
+
+
 TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 3600"`
 sudo echo "el token es $TOKEN" > hola.txt
 if [ "$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4)" == "10.0.1.100" ]; then
