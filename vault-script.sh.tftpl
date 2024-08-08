@@ -17,7 +17,6 @@ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinu
 # Install Vault
 sudo yum install -y vault
 sudo yum -y install jq
-sudo export VAULT_ADDR=https://127.0.0.1:8200
 echo "export VAULT_ADDR=https://127.0.0.1:8200" | sudo tee -a /etc/environment
 echo "export VAULT_API_ADDR=http://0.0.0.0:8200" | sudo tee -a /etc/environment
 source /etc/environment
@@ -87,11 +86,11 @@ ui="true"
 license_path = "/opt/vault/vault.hclic"
 EOT
 
-cat << EOT | sudo tee /tmp/scr.sh
+cat << EOF | sudo tee /tmp/scr.sh
     #!/bin/bash
     sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > initialization.json  
-EOT
-
+EOF
+sleep 10
 sudo chmod +x /tmp/scr.sh
 sudo ./scr.sh
 
