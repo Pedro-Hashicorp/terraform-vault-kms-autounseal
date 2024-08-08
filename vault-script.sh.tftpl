@@ -87,6 +87,13 @@ ui="true"
 license_path = "/opt/vault/vault.hclic"
 EOT
 
+cat << EOT | sudo tee /tmp/scr.sh
+    #!/bin/bash
+    sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > /tmp/initialization.json  
+EOT
+
+chmod +x /tmp/scr.sh
+./scr.sh
 
 mkdir -p /opt/vault/data
 chown vault:vault /opt/vault/data
@@ -108,7 +115,6 @@ chown root:vault /opt/vault/tls/vault-key.pem
 chmod 0640 /opt/vault/tls/vault-key.pem
 chmod 0644 /opt/vault/tls/vault-cert.pem /opt/vault/tls/vault-ca.pem
 chmod 0644 /etc/pki/ca-trust/source/anchors/vault-ca.pem /etc/pki/ca-trust/source/anchors/vault-ca.pem
-chmod 777 /home/ec2-user/*
 
 sudo systemctl enable vault
 sudo systemctl start vault
@@ -116,7 +122,7 @@ sleep 10
 TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 3600"`
 sudo echo "el token es $TOKEN" > hola.txt
 if [ "$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4)" == "10.0.1.100" ]; then
-    sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > /home/ec2-user/initialization.json  
+    sudo vault operator init -recovery-shares=3 -recovery-threshold=2 -format=json > /tmp/initialization.json  
     echo "This is the instance" > /tmp/special_command_output.txt
 else
     echo "This is not the first instance" > /tmp/regular_command_output.txt
