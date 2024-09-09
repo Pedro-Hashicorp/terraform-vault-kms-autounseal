@@ -1,8 +1,3 @@
-resource "aws_iam_role_policy_attachment" "vault_kms_attach" {
-  role       = aws_iam_role.s3_access_role.name
-  policy_arn = aws_iam_policy.kms_access.arn
-}
-
 resource "aws_iam_policy" "kms_access" {
   name = "kms"
 
