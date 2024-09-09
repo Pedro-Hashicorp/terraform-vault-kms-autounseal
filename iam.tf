@@ -22,8 +22,3 @@ resource "aws_iam_policy" "kms_access" {
 })
   
 }
-
-resource "aws_iam_instance_profile" "iam-for-ec2-create-s33" {
-  name = "iam-for-ec2-create-s33"
-  role = aws_iam_role.s3_access_role.name
-}
