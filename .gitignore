@@ -4,3 +4,4 @@
 portiz.pem
 secrets.tf
 .DS_*
+doormat-init.sh
