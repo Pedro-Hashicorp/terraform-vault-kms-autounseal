@@ -18,30 +18,6 @@ resource "aws_route_table" "my_public_rt" {
   }
 }
 
-resource "aws_s3_bucket" "my_bucket" {
-  bucket = "pedroform-bucket"  # Replace with your unique bucket name
-  tags = {
-    Name        = "MyBucket"
-    Environment = "Dev"
-  }
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-#create an S3 bucket acl to make it private
-resource "aws_s3_bucket_acl" "s3_acl" {
-  bucket = aws_s3_bucket.my_bucket.id
-  acl = "private"
-  depends_on = [ aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
-}
-
-resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
-  bucket = aws_s3_bucket.my_bucket.id
-  rule {
-    object_ownership = "ObjectWriter"
-  }
-}
 
 resource "aws_instance" "ec2_node" {
   count = 3
