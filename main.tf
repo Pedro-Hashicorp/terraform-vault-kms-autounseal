@@ -9,7 +9,7 @@ resource "aws_kms_key" "vault_unseal" {
 }
 
 
-#Create a Route table for the VPC
+#Create a Route table for the VP
 resource "aws_route_table" "my_public_rt" {
   vpc_id = aws_vpc.my_vpc.id
 
